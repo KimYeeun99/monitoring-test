@@ -21,3 +21,17 @@ services:
       - ./grafana-data:/var/lib/grafana
     depends_on:
       - prometheus
+
+  # 추가됨
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+
+  promtail:
+    image: grafana/promtail:latest
+    volumes:
+      - ./logs/backend:/logs
+      - ./promtail-config.yml:/etc/promtail/config.yml
+    command: -config.file=/etc/promtail/config.yml
